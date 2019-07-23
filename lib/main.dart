@@ -16,27 +16,43 @@ class MyApp extends StatelessWidget {
 }
 
 class MovieDetailsPage extends StatelessWidget {
+  final heroImageHeight = 300.0;
   final Movie movie;
 
   MovieDetailsPage({Key key, this.movie}) : super(key: key);
+
+  SizedBox buildHeroImage() {
+    return SizedBox(
+      height: heroImageHeight,
+      child: FadeInImage.assetNetwork(
+          fit: BoxFit.fitWidth,
+          placeholder: "",
+          image:
+          "https://pmcvariety.files.wordpress.com/2013/07/the-secret-life-of-pets-3.jpg?w=1000&h=562&crop=1"),
+    );
+  }
+
+  List<Widget> sliverBuilder(BuildContext context, bool innerBoxIsScrolled) {
+    return [
+      SliverAppBar(
+          pinned: true, expandedHeight: 200, flexibleSpace: buildHeroImage())
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
+        child: NestedScrollView(
+          headerSliverBuilder: sliverBuilder,
+          body: Stack(
             children: <Widget>[
-              SizedBox(
-                height: 300,
-                child: FadeInImage.assetNetwork(
-                    placeholder: "",
-                    image:
-                        "https://pmcvariety.files.wordpress.com/2013/07/the-secret-life-of-pets-3.jpg?w=1000&h=562&crop=1"),
-              ),
-              Padding(
-                  padding: EdgeInsets.all(20),
-                  child: MovieDetailsHeader(movie: movie))
+              Container(
+                child: Padding(
+                    padding: EdgeInsets.only(
+                        top: 20, left: 20, right: 20, bottom: 20),
+                    child: MovieDetailsHeader(movie: movie)),
+              )
             ],
           ),
         ),
@@ -65,7 +81,9 @@ class MovieDetailsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var textTheme = Theme.of(context).textTheme;
+    var textTheme = Theme
+        .of(context)
+        .textTheme;
     var movieInfo = Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -87,6 +105,9 @@ class MovieDetailsHeader extends StatelessWidget {
         )
       ],
     );
+    var photos = List.generate(10, (int i) => {
+    "https://upload.wikimedia.org/wikipedia/en/6/64/The_Secret_Life_of_Pets_poster.jpg";
+    });
     return Column(
       children: <Widget>[
         /*cover*/
@@ -97,7 +118,7 @@ class MovieDetailsHeader extends StatelessWidget {
               child: FadeInImage.assetNetwork(
                   placeholder: "",
                   image:
-                      "https://upload.wikimedia.org/wikipedia/en/6/64/The_Secret_Life_of_Pets_poster.jpg"),
+                  "https://upload.wikimedia.org/wikipedia/en/6/64/The_Secret_Life_of_Pets_poster.jpg"),
             ),
             SizedBox(width: 16),
             movieInfo
@@ -107,11 +128,19 @@ class MovieDetailsHeader extends StatelessWidget {
 
         /*film description*/
         Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Text("Store line", style: textTheme.subhead.copyWith(fontSize: 18)),
+            Text(
+              "Store line",
+              style: textTheme.subhead.copyWith(fontSize: 18),
+              textAlign: TextAlign.left,
+            ),
             SizedBox(height: 8),
             Text(
-                "In a Manhattan apartment building, Max's life as a favorite pet is turned upside-down, when his owner brings home sloppy mongrel Duke. They must put their quarrels aside when they learn that adorable white bunny Snowball is building an army of lost pets determined to wreak revenge.")
+                "In a Manhattan apartment building, Max's life as a favorite pet is turned upside-down, when his owner brings home sloppy mongrel Duke. They must put their quarrels aside when they learn that adorable white bunny Snowball is building an army of lost pets determined to wreak revenge."),
+            SizedBox(height: 100, child:
+            ListView.builder(itemCount: photos.length,)
+              ,)
           ],
         )
       ],
