@@ -23,15 +23,22 @@ class MovieDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 40,
-            ),
-            MovieDetailsHeader(movie: movie),
-            Padding(padding: EdgeInsets.all(20))
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 300,
+                child: FadeInImage.assetNetwork(
+                    placeholder: "",
+                    image:
+                        "https://pmcvariety.files.wordpress.com/2013/07/the-secret-life-of-pets-3.jpg?w=1000&h=562&crop=1"),
+              ),
+              Padding(
+                  padding: EdgeInsets.all(20),
+                  child: MovieDetailsHeader(movie: movie))
+            ],
+          ),
         ),
       ),
     );
@@ -60,7 +67,7 @@ class MovieDetailsHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     var movieInfo = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text("Secret Life of Pets", style: textTheme.title),
         SizedBox(height: 8),
@@ -73,13 +80,41 @@ class MovieDetailsHeader extends StatelessWidget {
           ],
         ),
         SizedBox(height: 12),
+
+        /*chips*/
         Row(
           children: _buildCategoryChips(textTheme),
         )
       ],
     );
-    return Container(
-      child: movieInfo,
+    return Column(
+      children: <Widget>[
+        /*cover*/
+        Row(
+          children: <Widget>[
+            SizedBox(
+              height: 230,
+              child: FadeInImage.assetNetwork(
+                  placeholder: "",
+                  image:
+                      "https://upload.wikimedia.org/wikipedia/en/6/64/The_Secret_Life_of_Pets_poster.jpg"),
+            ),
+            SizedBox(width: 16),
+            movieInfo
+          ],
+        ),
+        SizedBox(height: 32),
+
+        /*film description*/
+        Column(
+          children: <Widget>[
+            Text("Store line", style: textTheme.subhead.copyWith(fontSize: 18)),
+            SizedBox(height: 8),
+            Text(
+                "In a Manhattan apartment building, Max's life as a favorite pet is turned upside-down, when his owner brings home sloppy mongrel Duke. They must put their quarrels aside when they learn that adorable white bunny Snowball is building an army of lost pets determined to wreak revenge.")
+          ],
+        )
+      ],
     );
   }
 }
