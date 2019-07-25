@@ -43,23 +43,26 @@ class MovieDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: SafeArea(
-        child: NestedScrollView(
+        resizeToAvoidBottomPadding: false,
+        body: NestedScrollView(
           headerSliverBuilder: sliverBuilder,
-          body: Stack(
-            children: <Widget>[
-              Container(
-                child: Padding(
-                    padding: EdgeInsets.only(
-                        top: 20, left: 20, right: 20, bottom: 20),
-                    child: MovieDetailsHeader(movie: movie)),
-              )
-            ],
+          body: SafeArea(
+            bottom: true,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    child: Padding(
+                        padding: EdgeInsets.only(
+                            top: 20, left: 20, right: 20, bottom: 20),
+                        child: MovieDetailsHeader(movie: movie)),
+                  )
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
 
@@ -72,7 +75,7 @@ class MovieDetailsHeader extends StatelessWidget {
       (int i) =>
           "https://upload.wikimedia.org/wikipedia/en/6/64/The_Secret_Life_of_Pets_poster.jpg");
 
-@override
+  @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     var movieInfo = Column(
@@ -117,7 +120,7 @@ class MovieDetailsHeader extends StatelessWidget {
       ],
     );
   }
-  
+
   List<Widget> _buildCategoryChips(TextTheme textTheme) {
     return ["Action", "Comedy"].map((category) {
       return Padding(
@@ -181,8 +184,6 @@ class MovieDetailsHeader extends StatelessWidget {
           movieInfo
         ],
       );
-
-  
 }
 
 class Rating extends StatelessWidget {
