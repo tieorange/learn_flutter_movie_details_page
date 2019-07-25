@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_movie_details_page/movie_api.dart';
 
@@ -28,7 +29,7 @@ class MovieDetailsPage extends StatelessWidget {
           fit: BoxFit.fitWidth,
           placeholder: "",
           image:
-          "https://pmcvariety.files.wordpress.com/2013/07/the-secret-life-of-pets-3.jpg?w=1000&h=562&crop=1"),
+              "https://pmcvariety.files.wordpress.com/2013/07/the-secret-life-of-pets-3.jpg?w=1000&h=562&crop=1"),
     );
   }
 
@@ -65,6 +66,10 @@ class MovieDetailsHeader extends StatelessWidget {
   MovieDetailsHeader({this.movie});
 
   final Movie movie;
+  final List<String> photos = List.generate(
+      10,
+      (int i) =>
+          "https://upload.wikimedia.org/wikipedia/en/6/64/The_Secret_Life_of_Pets_poster.jpg");
 
   List<Widget> _buildCategoryChips(TextTheme textTheme) {
     return ["Action", "Comedy"].map((category) {
@@ -79,11 +84,25 @@ class MovieDetailsHeader extends StatelessWidget {
     }).toList();
   }
 
+  Widget itemBuilder(BuildContext context, int index) {
+    String photoUrl = photos.elementAt(index);
+    return new Padding(
+        padding: EdgeInsets.only(right: 16),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(4.0),
+          child: Row(
+            children: <Widget>[
+              Image.asset(photoUrl, fit: BoxFit.cover),
+              CupertinoAlertDialog(
+                  title: Text("title"), content: Text(photos.elementAt(0)))
+            ],
+          ),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
-    var textTheme = Theme
-        .of(context)
-        .textTheme;
+    var textTheme = Theme.of(context).textTheme;
     var movieInfo = Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -105,9 +124,6 @@ class MovieDetailsHeader extends StatelessWidget {
         )
       ],
     );
-    var photos = List.generate(10, (int i) => {
-    "https://upload.wikimedia.org/wikipedia/en/6/64/The_Secret_Life_of_Pets_poster.jpg";
-    });
     return Column(
       children: <Widget>[
         /*cover*/
@@ -115,10 +131,13 @@ class MovieDetailsHeader extends StatelessWidget {
           children: <Widget>[
             SizedBox(
               height: 230,
-              child: FadeInImage.assetNetwork(
-                  placeholder: "",
-                  image:
-                  "https://upload.wikimedia.org/wikipedia/en/6/64/The_Secret_Life_of_Pets_poster.jpg"),
+              child: Material(
+                elevation: 8,
+                child: FadeInImage.assetNetwork(
+                    placeholder: "",
+                    image:
+                        "https://upload.wikimedia.org/wikipedia/en/6/64/The_Secret_Life_of_Pets_poster.jpg"),
+              ),
             ),
             SizedBox(width: 16),
             movieInfo
@@ -131,16 +150,22 @@ class MovieDetailsHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              "Store line",
+              "Storyline",
               style: textTheme.subhead.copyWith(fontSize: 18),
               textAlign: TextAlign.left,
             ),
             SizedBox(height: 8),
             Text(
                 "In a Manhattan apartment building, Max's life as a favorite pet is turned upside-down, when his owner brings home sloppy mongrel Duke. They must put their quarrels aside when they learn that adorable white bunny Snowball is building an army of lost pets determined to wreak revenge."),
-            SizedBox(height: 100, child:
-            ListView.builder(itemCount: photos.length,)
-              ,)
+            SizedBox(
+              height: 100,
+              child: (ListView.builder(
+                itemCount: photos.length,
+                itemBuilder: itemBuilder,
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.all(8),
+              )),
+            )
           ],
         )
       ],
