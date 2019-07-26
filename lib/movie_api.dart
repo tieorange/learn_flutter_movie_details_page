@@ -6,7 +6,6 @@ final Movie testMovie = Movie(
   title: 'The Secret Life of Pets',
   rating: 8.0,
   starRating: 4,
-
   categories: ['Animation', 'Comedy'],
   storyline: 'For their fifth fully-animated feature-film '
       'collaboration, Illumination Entertainment and Universal '

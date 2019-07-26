@@ -26,7 +26,7 @@ class MovieDetailsPage extends StatelessWidget {
     return SizedBox(
       height: heroImageHeight,
       child: FadeInImage.assetNetwork(
-          fit: BoxFit.fitWidth,
+          fit: BoxFit.cover,
           placeholder: "",
           image:
               "https://pmcvariety.files.wordpress.com/2013/07/the-secret-life-of-pets-3.jpg?w=1000&h=562&crop=1"),
